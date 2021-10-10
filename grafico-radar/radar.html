@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .holder {
+            width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="calculator">
+
+        <div class="container">
+            <form action="#">
+                <h1>rpg status</h1>
+
+                <label>- Nome:</label>
+                <input type="text" name="aluno" class="currency" v-model="aluno" />
+
+                <label>- Objetivos:</label>
+                <input type="number" name="nota1" class="currency" v-model.number="nota1" />
+
+                <label>- Força:</label>
+                <input type="number" name="nota2" class="currency" v-model.number="nota2" />
+
+                <label>- Charm:</label>
+                <input type="number" name="nota2" class="currency" v-model.number="nota3" />
+
+                <label>- creativity:</label>
+                <input type="number" name="nota2" class="currency" v-model.number="nota4" />
+
+                <label>- Inteligência:</label>
+                <input type="number" name="nota2" class="currency" v-model.number="nota5" />
+
+                <!-- <button type="submit" class="btn btn-primary" >
+                    Adicionar Aluno
+                </button> -->
+                <p style="color: rgb(218, 102, 198)">Média Final: {{media}}</p>
+                <!--retorna a média-->
+
+                <div v-bind:class="{ error: !isAlunoAprovado } ">
+                    <span style="color: rgb(211, 75, 75)" v-if="!isAlunoAprovado && isPreenchido">{{aluno}} Média não alcançada!</span>
+                    <!--se is não tem AlunoAprovadoquando e tem isPreenchido a  media não alcançada-->
+                    <span style="color: rgb(30, 204, 38)" v-if="isAlunoAprovado && isPreenchido">{{aluno}} Média alcançada!</span>
+                    <span style="color: rgb(66, 211, 187)" v-if="isBrabo && isPreenchido">{{aluno}} brabo lek!</span>
+                    <span style="color: rgb(193, 10, 218)" v-if="isBruto && isPreenchido">Perfeito!</span>
+
+                    <span style="color: rgb(230, 226, 49)" v-if="islixo && isPreenchido"> muito lixo, treinem mais.</span>
+                    <span style="color: rgb(153, 15, 15)" v-if="ismuitolixo && isPreenchido"> you are nothing!</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="holder">
+        <canvas id="myChart"></canvas>
+        <!--grafico fica aqui-->
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js">//caminho cdn para uso sem import de graficos
+    </script>
+
+    <script>
+        //-----------------------------ajustar pontos------------------------------------------
+        let ctx = document.getElementById("myChart");//fixa id chart
+        let myChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ["Objetivos", "Força", "Charm", "creativity", "Inteligência"],// opçoes q teraão os dados
+                datasets: [{
+                    label: 'status',//titulo do assunto
+                    data: [3.8, 3, 3, 3.3, 3.8],//dados
+                    backgroundColor: 'rgba(255, 0, 0, .3)',//gera uma fundo rosa transparente
+                    borderColor: [
+                        'rgba(255,99,132,1)',//borda com os traçoes rosa
+                    ],
+                    borderWidth: 4
+                },
+                {
+                    label: 'Topo',
+                    data: [10, 0],//dados
+                    backgroundColor: 'rgba(0, 0, 255, .3)',//gera uma fundo azul transparente
+                    borderColor: [
+                        'rgba(0, 0, 255, .3)',
+                    ],
+                    borderWidth: 4
+                }
+                ]
+            },
+        });
+        //-----------------------------------------------------------------------
+
+
+        var calculator = new Vue({
+            el: '#calculator',
+            data: {//v-model referenciado aqui e iniciais
+                aluno: "",
+                nota1: null,
+                nota2: null,
+                nota3: null,
+                nota4: null,
+                nota5: null,
+            },
+            computed: {
+                isPreenchido() {//se possue isPreenchido media não alcançada
+                    return this.nota1 != null && this.nota2 != null && this.nota3 != null && this.nota4 != null && this.nota5 != null;//retorna aluno diferente de vazio, notas nulo
+                },
+
+                ismuitolixo() {
+
+                    return (this.media) == 0
+
+                },
+
+                islixo() {
+
+                    return (this.media) <= 4.9
+
+                },
+
+                isAlunoAprovado() {
+
+                    return (this.media) >= 7 // ser maior ou igual a 7 o isAlunoAprovado é retornado					
+                    //return (this.nota1 * 0.25 + this.nota2 * 0.25 + this.media * 0.5 ) >= 6.2  //ser maior ou igual a 6.2 o isAlunoAprovado true
+
+                },
+
+                isBrabo() {
+                    return (this.media) >= 8.5
+
+                },
+
+                isBruto() {
+                    return (this.media) == 10
+
+                },
+
+                media() {//média
+
+                    return (this.nota1 + this.nota2 + this.nota3 + this.nota4 + this.nota5) / 5;//calculo da média retornada
+
+                }
+
+            },
+
+
+        });
+
+    </script>
+
+</body>
+
+</html>
